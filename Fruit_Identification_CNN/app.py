@@ -1,11 +1,13 @@
 
+
+
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 import streamlit as st
 import numpy as np
 from PIL import Image
 
-model = load_model('./Image_classify.keras') 
+model = load_model('./Image_classify1811.keras') 
 data_cat = ['apple','avocado', 
  'banana', 'cherry', 
  'kiwi',
@@ -27,7 +29,7 @@ if uploaded_file is not None:
     img_arr = tf.keras.utils.img_to_array(image_load)
     img_bat = tf.expand_dims(img_arr, 0)
     
-    st.image(image_load, caption="Uploaded Image", width=460)
+    st.image(image_load, caption="Uploaded Image", width=400)
     predict = model.predict(img_bat)
     score = tf.nn.softmax(predict[0])
 

@@ -60,7 +60,7 @@ model = Sequential([
     layers.Conv2D(64,3, padding = 'same',activation='relu'),
     layers.MaxPooling2D(),
     layers.Flatten(),
-    layers.Dropout(0.5),
+    layers.Dropout(0.2),
     layers.Dense(128),
     layers.Dense(len(data_cat))
 ])
@@ -72,7 +72,7 @@ history =model.fit(data_train,validation_data =data_val,epochs=epochs_size)
 
 
 epochs_range =range(epochs_size)
-plt.figure(figsize = (10,8))
+plt.figure(figsize = (8,8))
 plt.subplot(1,2,1)
 plt.plot(epochs_range, history.history['accuracy'], label='Training Accuracy')
 plt.plot(epochs_range, history.history['val_accuracy'], label = 'Validation Accuracy')
@@ -86,15 +86,16 @@ plt.plot(epochs_range, history.history['val_loss'], label = 'Validation Loss')
 plt.title('Loss')
 
 
-image = './Pipeapple.jpg'
+image = './apple.jfif'
 image = tf.keras.utils.load_img(image, target_size=(img_height, img_width), color_mode="rgb")
+# image =tf.keras.utils.load_img(image, target_size=(img_height, img_width))
 img_arr =tf.keras.utils.array_to_img(image)
 img_bat = tf.expand_dims(img_arr, 0)
 
 predict =model.predict(img_bat)
 
 score =tf.nn.softmax(predict)
-print('Fruit in image is {} with accuracy of {:0.2f}'.format(data_cat[np.argmax(score)],np.max(score)*100))
+print('Veg/Fruit in image is {} with accuracy of {:0.2f}'.format(data_cat[np.argmax(score)],np.max(score)*100))
 
 
-model.save('Image_classify.keras')
+model.save('Image_classify_norgb.keras')
