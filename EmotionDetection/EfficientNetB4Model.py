@@ -2,7 +2,7 @@ import os
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import tensorflow as tf
 import numpy as np
-import matplotlib.pyplot as plt### plotting bar chart
+import matplotlib.pyplot as plt
 from tensorflow.keras.models import Model # type: ignore
 from tensorflow.keras.layers import Layer # type: ignore
 from tensorflow.keras.layers import (GlobalAveragePooling2D, Dense, # type: ignore
@@ -75,17 +75,17 @@ def augment_layer(image, label):
 
 ###Dataset Preparation
 training_dataset = (
-    train_dataset
-    .map(augment_layer, num_parallel_calls = tf.data.AUTOTUNE)
-    .prefetch(tf.data.AUTOTUNE)
+  train_dataset
+  .map(augment_layer, num_parallel_calls = tf.data.AUTOTUNE)
+  .prefetch(tf.data.AUTOTUNE)
 )
 validation_dataset = (
-    val_dataset
-    .prefetch(tf.data.AUTOTUNE)
+  val_dataset
+  .prefetch(tf.data.AUTOTUNE)
 )
 resize_rescale_layers = tf.keras.Sequential([
-       Resizing(CONFIGURATION["IM_SIZE"], CONFIGURATION["IM_SIZE"]),
-       Rescaling(1./255),
+  Resizing(CONFIGURATION["IM_SIZE"], CONFIGURATION["IM_SIZE"]),
+  Rescaling(1./255),
 ])
 
 
@@ -97,15 +97,15 @@ backbone = tf.keras.applications.efficientnet.EfficientNetB4(
     )
 backbone.trainable = False
 pretrained_model = tf.keras.Sequential([
-    Input(shape = (CONFIGURATION["IM_SIZE"], CONFIGURATION["IM_SIZE"],3)),
-    backbone,
-    GlobalAveragePooling2D(),
-    Dense( CONFIGURATION["N_DENSE_1"], activation = "relu"),
-    BatchNormalization(),
-    Dense( CONFIGURATION["N_DENSE_2"], activation = "relu"),
-    Dense( CONFIGURATION["NUM_CLASSES"], activation = "softmax"),
+  Input(shape = (CONFIGURATION["IM_SIZE"], CONFIGURATION["IM_SIZE"],3)),
+  backbone,
+  GlobalAveragePooling2D(),
+  Dense( CONFIGURATION["N_DENSE_1"], activation = "relu"),
+  BatchNormalization(),
+  Dense( CONFIGURATION["N_DENSE_2"], activation = "relu"),
+  Dense( CONFIGURATION["NUM_CLASSES"], activation = "softmax"),
 
-    ])
+  ])
 pretrained_model.summary()
 
 

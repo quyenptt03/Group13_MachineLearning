@@ -67,16 +67,18 @@ random_indices = random.sample(range(len(all_images)), 16)
 random_images = [all_images[i] for i in random_indices]
 random_labels = [all_labels[i] for i in random_indices]
 
-# Plot the random images
 plt.figure(figsize=(12, 12))
 for i in range(16):
     ax = plt.subplot(4, 4, i + 1)
     plt.imshow(random_images[i] / 255.0)
 
     true_label = CONFIGURATION["CLASS_NAMES"][tf.argmax(random_labels[i], axis=-1).numpy()]
-    pred_label = CONFIGURATION["CLASS_NAMES"][int(tf.argmax(trained_model(tf.expand_dims(random_images[i], axis=0)), axis=-1).numpy()[0])]
     
-    plt.title(f"True Label: {true_label}\nPredicted Label: {pred_label}")
+    predictions = trained_model(tf.expand_dims(random_images[i], axis=0)) 
+    probabilities = tf.nn.softmax(predictions[0]).numpy() 
+    pred_label = CONFIGURATION["CLASS_NAMES"][np.argmax(probabilities)]
+
+    plt.title(f"True: {true_label}\nPred: {pred_label}")
     plt.axis("off")
 plt.show()
 
